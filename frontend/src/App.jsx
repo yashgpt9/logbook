@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -11,6 +11,11 @@ import Lines from './pages/Lines';
 import Machines from './pages/Machines';
 import MachineDetails from './pages/MachineDetails';
 
+function IndexRoute() {
+  const { isAdmin } = useAuth();
+  return isAdmin ? <Dashboard /> : <Navigate to="/browse" replace />;
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -20,7 +25,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-              <Route index element={<Navigate to="/browse" replace />} />
+              <Route index element={<IndexRoute />} />
               <Route path="browse" element={<Sheds />} />
           <Route path="browse/:shedId/lines" element={<Lines />} />
           <Route path="browse/:shedId/lines/:lineId/machines" element={<Machines />} />
