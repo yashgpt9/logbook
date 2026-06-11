@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Cog, Plus, Trash2, ArrowLeft } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../api/api';
 
 export default function Machines() {
@@ -33,9 +34,11 @@ export default function Machines() {
       await api.post(`/lines/${lineId}/machines`, formData);
       setFormData({ machine_code: '', machine_name: '' });
       setShowModal(false);
+      toast.success('Machine created successfully!');
       fetchMachines();
     } catch (error) {
       console.error(error);
+      toast.error(error.response?.data?.error || 'Failed to create machine');
     }
   };
 
@@ -45,9 +48,11 @@ export default function Machines() {
     if (!confirm('Are you sure you want to delete this machine? All logs associated will be deleted.')) return;
     try {
       await api.delete(`/machines/${id}`);
+      toast.success('Machine deleted');
       fetchMachines();
     } catch (error) {
       console.error(error);
+      toast.error('Failed to delete machine');
     }
   };
 

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Sheds from './pages/Sheds';
@@ -8,7 +9,8 @@ import MachineDetails from './pages/MachineDetails';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
+      <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />

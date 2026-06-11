@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { GitFork, Plus, Trash2, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, SplitSquareHorizontal } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../api/api';
 
 export default function Lines() {
@@ -33,21 +34,25 @@ export default function Lines() {
       await api.post(`/sheds/${shedId}/lines`, { name: newLineName });
       setNewLineName('');
       setShowModal(false);
+      toast.success('Line created successfully!');
       fetchLines();
     } catch (error) {
       console.error(error);
+      toast.error('Failed to create line');
     }
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (id, e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!confirm('Are you sure you want to delete this line?')) return;
+    if (!window.confirm('Are you sure you want to delete this line? All machines inside will be deleted.')) return;
     try {
       await api.delete(`/lines/${id}`);
+      toast.success('Line deleted');
       fetchLines();
     } catch (error) {
       console.error(error);
+      toast.error('Failed to delete line');
     }
   };
 

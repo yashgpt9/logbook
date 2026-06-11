@@ -54,9 +54,29 @@ export default function Layout() {
             <Activity className="w-6 h-6 text-primary-600 mr-3" />
             <span className="text-xl font-bold text-slate-900 tracking-tight">Logbook</span>
         </header>
-        <div className="flex-1 overflow-auto p-6 md:p-10 bg-slate-50/50">
+        <div className="flex-1 overflow-auto p-6 md:p-10 bg-slate-50/50 pb-20 md:pb-6">
           <Outlet />
         </div>
+
+        {/* Mobile Bottom Navigation */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around items-center h-16 z-50 px-2 pb-safe">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={clsx(
+                  'flex flex-col items-center justify-center w-full h-full space-y-1',
+                  isActive ? 'text-primary-600' : 'text-slate-500 hover:text-slate-900'
+                )}
+              >
+                <item.icon className={clsx('w-5 h-5', isActive ? 'text-primary-600' : 'text-slate-500')} />
+                <span className="text-[10px] font-medium">{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </main>
     </div>
   );

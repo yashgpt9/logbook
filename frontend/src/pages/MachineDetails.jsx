@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Printer, Activity, User, MessageSquare, Download, Clock, Wrench } from 'lucide-react';
 import { format } from 'date-fns';
 import * as XLSX from 'xlsx';
+import toast from 'react-hot-toast';
 import api from '../api/api';
 
 export default function MachineDetails() {
@@ -64,10 +65,11 @@ export default function MachineDetails() {
         machine_status: 'Running'
       });
       setShowModal(false);
+      toast.success('Log added successfully!');
       fetchData();
     } catch (error) {
       console.error(error);
-      alert('Error creating log: ' + (error.response?.data?.error || error.message));
+      toast.error('Error creating log: ' + (error.response?.data?.error || error.message));
     }
   };
 

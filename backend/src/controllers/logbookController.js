@@ -128,6 +128,9 @@ exports.createMachine = async (req, res) => {
     const [result] = await db.query('INSERT INTO machines (machine_code, machine_name, line_id) VALUES (?, ?, ?)', [machine_code, machine_name, lineId]);
     res.status(201).json({ id: result.insertId, machine_code, machine_name, line_id: lineId });
   } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ error: 'A machine with this code already exists.' });
+    }
     res.status(500).json({ error: 'Server error' });
   }
 };

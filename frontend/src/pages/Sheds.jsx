@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Factory, Plus, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../api/api';
 
 export default function Sheds() {
@@ -31,22 +32,25 @@ export default function Sheds() {
       await api.post('/sheds', { name: newShedName });
       setNewShedName('');
       setShowModal(false);
+      toast.success('Shed created successfully!');
       fetchSheds();
     } catch (error) {
       console.error(error);
-      alert('Error: ' + (error.response?.data?.error || error.message));
+      toast.error('Error: ' + (error.response?.data?.error || error.message));
     }
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (id, e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!confirm('Are you sure you want to delete this shed? This will delete all lines and machines inside.')) return;
+    if (!window.confirm('Are you sure you want to delete this shed? All lines and machines inside will be deleted.')) return;
     try {
       await api.delete(`/sheds/${id}`);
+      toast.success('Shed deleted');
       fetchSheds();
     } catch (error) {
       console.error(error);
+      toast.error('Failed to delete shed');
     }
   };
 
