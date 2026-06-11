@@ -56,9 +56,18 @@ export default function Layout() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 bg-surface border-b border-slate-200 flex items-center px-6 md:hidden">
+        <header className="h-16 bg-surface border-b border-slate-200 flex items-center justify-between px-6 md:hidden">
+          <div className="flex items-center">
             <Activity className="w-6 h-6 text-primary-600 mr-3" />
             <span className="text-xl font-bold text-slate-900 tracking-tight">Logbook</span>
+          </div>
+          <button 
+            onClick={() => { logout(); navigate('/login'); }}
+            className="text-slate-500 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50"
+            title="Log Out"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
         </header>
         <div className="flex-1 overflow-auto p-6 md:p-10 bg-slate-50/50 pb-20 md:pb-6">
           <Outlet />
