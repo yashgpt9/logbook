@@ -29,6 +29,13 @@ class ErrorBoundary extends React.Component {
           <p className="text-slate-500 mb-8 max-w-md">
             A small glitch caused this page to crash. Don't worry, your data is safe. Please reload the page to continue.
           </p>
+          {this.state.error && (
+            <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-8 max-w-2xl text-left overflow-auto text-sm font-mono border border-red-200">
+              {this.state.error.toString()}
+              <br/>
+              {this.state.error.stack}
+            </div>
+          )}
           <button
             onClick={() => window.location.href = '/'}
             className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-colors shadow-sm"
