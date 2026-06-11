@@ -40,7 +40,7 @@ export default function Sheds() {
     }
   };
 
-  const handleDelete = async (id, e) => {
+  const handleDelete = async (e, id) => {
     e.preventDefault();
     e.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this shed? All lines and machines inside will be deleted.')) return;

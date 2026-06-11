@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Sheds from './pages/Sheds';
@@ -9,8 +10,9 @@ import MachineDetails from './pages/MachineDetails';
 
 function App() {
   return (
-    <Router>
-      <Toaster position="top-right" />
+    <ErrorBoundary>
+      <Router>
+        <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
@@ -20,7 +22,8 @@ function App() {
           <Route path="machine/:machineId" element={<MachineDetails />} />
         </Route>
       </Routes>
-    </Router>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

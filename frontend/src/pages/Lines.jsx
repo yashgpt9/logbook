@@ -42,7 +42,7 @@ export default function Lines() {
     }
   };
 
-  const handleDelete = async (id, e) => {
+  const handleDelete = async (e, id) => {
     e.preventDefault();
     e.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this line? All machines inside will be deleted.')) return;
