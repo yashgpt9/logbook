@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: 'https://logbook-zt9x.onrender.com/api',
 });
 
 export default api;
