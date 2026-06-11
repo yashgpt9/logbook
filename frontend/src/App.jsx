@@ -20,7 +20,7 @@ function App() {
           <Route path="machine/:machineId" element={<MachineDetails />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
