@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Trash2, GitFork } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Lines() {
   const { shedId } = useParams();
@@ -11,6 +12,7 @@ export default function Lines() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newLineName, setNewLineName] = useState('');
+  const { isAdmin } = useAuth();
 
   const fetchLines = async () => {
     try {
@@ -67,13 +69,15 @@ export default function Lines() {
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Production Lines</h1>
             <p className="mt-2 text-slate-500">Select a line to view its machines.</p>
           </div>
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Add Line
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Add Line
+            </button>
+          )}
         </div>
       </div>
 
@@ -87,15 +91,17 @@ export default function Lines() {
               to={`/browse/${shedId}/lines/${line.id}/machines`}
               className="group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-4">
-                <button
-                  onClick={(e) => handleDelete(e, line.id)}
-                  className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
-                  title="Delete Line"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="absolute top-0 right-0 p-4">
+                  <button
+                    onClick={(e) => handleDelete(e, line.id)}
+                    className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
+                    title="Delete Line"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
               <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl w-fit mb-4">
                 <GitFork className="w-8 h-8" />
               </div>

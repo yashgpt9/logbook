@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Cog, Plus, Trash2, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Machines() {
   const { shedId, lineId } = useParams();
@@ -11,6 +12,7 @@ export default function Machines() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ machine_code: '', machine_name: '' });
+  const { isAdmin } = useAuth();
 
   const fetchMachines = async () => {
     try {
@@ -67,13 +69,15 @@ export default function Machines() {
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Machines</h1>
             <p className="mt-2 text-slate-500">Select a machine to view its details and maintenance history.</p>
           </div>
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Add Machine
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Add Machine
+            </button>
+          )}
         </div>
       </div>
 
@@ -87,15 +91,17 @@ export default function Machines() {
               to={`/machine/${machine.id}`}
               className="group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-300 hover:shadow-md transition-all relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-4">
-                <button
-                  onClick={(e) => handleDelete(e, machine.id)}
-                  className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
-                  title="Delete Machine"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="absolute top-0 right-0 p-4">
+                  <button
+                    onClick={(e) => handleDelete(e, machine.id)}
+                    className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
+                    title="Delete Machine"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
               <div className="p-3 bg-amber-50 text-amber-600 rounded-xl w-fit mb-4">
                 <Cog className="w-8 h-8" />
               </div>

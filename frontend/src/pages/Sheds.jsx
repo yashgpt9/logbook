@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Factory, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Sheds() {
   const [sheds, setSheds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newShedName, setNewShedName] = useState('');
+  const { isAdmin } = useAuth();
 
   const fetchSheds = async () => {
     try {
@@ -61,13 +63,15 @@ export default function Sheds() {
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Plant Sheds</h1>
           <p className="mt-2 text-slate-500">Select a shed to view its production lines.</p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Add Shed
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => setShowModal(true)}
+            className="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add Shed
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -80,15 +84,17 @@ export default function Sheds() {
               to={`/browse/${shed.id}/lines`}
               className="group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-primary-300 hover:shadow-md transition-all relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-4">
-                <button
-                  onClick={(e) => handleDelete(e, shed.id)}
-                  className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
-                  title="Delete Shed"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="absolute top-0 right-0 p-4">
+                  <button
+                    onClick={(e) => handleDelete(e, shed.id)}
+                    className="text-slate-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
+                    title="Delete Shed"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
               <div className="p-3 bg-primary-50 text-primary-600 rounded-xl w-fit mb-4">
                 <Factory className="w-8 h-8" />
               </div>
