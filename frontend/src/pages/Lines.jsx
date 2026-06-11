@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2, SplitSquareHorizontal } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, GitFork } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/api';
 
